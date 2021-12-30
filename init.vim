@@ -57,7 +57,7 @@ set secure
 set number
 set relativenumber
 set cursorline
-set hidden
+set hidden "缓冲区
 set noexpandtab
 set tabstop=2  " 定义tab所等同的空格长度
 set shiftwidth=2 " 自动缩进所使用的空白长度
@@ -678,17 +678,18 @@ let g:coc_global_extensions = [
 	\ 'coc-yaml',
 	\ 'coc-yank',
 	\ 'https://github.com/rodrigore/coc-tailwind-intellisense']
+
 inoremap <silent><expr> <TAB>
-	\ pumvisible() ? "\<C-n>" :
-	\ <SID>check_back_space() ? "\<TAB>" :
-	\ coc#refresh()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 function! s:check_back_space() abort
 	let col = col('.') - 1
 	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <silent><expr> <c-o> coc#refresh()
 function! Show_documentation()
 	call CocActionAsync('highlight')
@@ -717,6 +718,7 @@ xmap kc <Plug>(coc-classobj-i)
 omap kc <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
+
 " Useful commands
 nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
@@ -726,6 +728,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 nmap ff :CocCommand explorer<CR>
+
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 " Remap for do codeAction of selected region
@@ -745,7 +748,7 @@ imap <C-l> <Plug>(coc-snippets-expand)
 vmap <C-e> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-e>'
 let g:coc_snippet_prev = '<c-n>'
-imap <C-i> <Plug>(coc-snippets-expand-jump)
+" imap <C-i> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'David Chen'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 
