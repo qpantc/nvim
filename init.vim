@@ -44,8 +44,9 @@ source $HOME/.config/nvim/_machine_specific.vim
 " === System
 " ===
 "set clipboarplus
-let &t_ut=''
-set autochdir
+
+let &t_ut='' "#某些终端配色可能不对需要这个调整
+set autochdir "#自动切换当前目录为当前文件所在的目录
 
 
 " ===
@@ -58,10 +59,10 @@ set relativenumber
 set cursorline
 set hidden
 set noexpandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set autoindent
+set tabstop=2  " 定义tab所等同的空格长度
+set shiftwidth=2 " 自动缩进所使用的空白长度
+set softtabstop=2 
+set autoindent " 自动缩进
 set list
 set listchars=tab:\|\ ,trail:▫
 set scrolloff=5
@@ -88,15 +89,18 @@ set completeopt=longest,noinsert,menuone,noselect,preview
 set ttyfast "should make scrolling faster
 set lazyredraw "same as above
 set visualbell
+
 silent !mkdir -p $HOME/.config/nvim/tmp/backup
 silent !mkdir -p $HOME/.config/nvim/tmp/undo
 "silent !mkdir -p $HOME/.config/nvim/tmp/sessions
 set backupdir=$HOME/.config/nvim/tmp/backup,.
 set directory=$HOME/.config/nvim/tmp/backup,.
+
 if has('persistent_undo')
 	set undofile
 	set undodir=$HOME/.config/nvim/tmp/undo,.
 endif
+
 set colorcolumn=100
 set updatetime=100
 set virtualedit=block
@@ -127,22 +131,17 @@ noremap S :w<CR>
 
 " Open the vimrc file anytime
 noremap <LEADER>rc :e $HOME/.config/nvim/init.vim<CR>
-noremap <LEADER>rv :e .nvimrc<CR>
-
-" Undo operations
-" noremap l u
+" noremap <LEADER>rv :e .nvimrc<CR>
 
 " Insert Key
 noremap w i
 noremap W I
 
-" make Y to copy till the end of the line
-nnoremap Y y$
+" COPY
+nnoremap Y y$ " make Y to copy till the end of the line
+vnoremap Y "+y " Copy to system clipboard
 
-" Copy to system clipboard
-vnoremap Y "+y
-
-" Indentation
+" Indentation 缩进
 nnoremap < <<
 nnoremap > >>
 
@@ -150,20 +149,13 @@ nnoremap > >>
 nnoremap dy d%
 
 " Search
-noremap <LEADER><CR> :nohlsearch<CR>
+noremap <silent> <LEADER><CR> :nohlsearch<CR>
 
 " Adjacent duplicate words
 noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
 
-" Space to Tab
-nnoremap <LEADER>tt :%s/    /\t/g
-vnoremap <LEADER>tt :s/    /\t/g
-
 " Folding
 noremap <silent> <LEADER>o za
-
-" nnoremap <c-n> :tabe<CR>:-tabmove<CR>:term lazynpm<CR>
-
 
 " ===
 " === Cursor Movement
@@ -177,26 +169,25 @@ noremap <silent> <LEADER>o za
 noremap <silent> i k
 noremap <silent> j h
 noremap <silent> k j
+noremap <silent> l l
 
-noremap <silent> gu gk
-noremap <silent> ge gj
 noremap <silent> \v v$h
 
-" U/E keys for 5 times u/e (faster navigation)
+" I/k keys for 5 times i/k (faster navigation)
 noremap <silent> I 5k
 noremap <silent> K 5j
 
 " J key: go to the start of the line
-" noremap <silent> J 0
-" E key: go to the end of the line
+noremap <silent> J 0
+" L key: go to the end of the line
 noremap <silent> L $
 
 " Faster in-line navigation
 noremap N 5w
 noremap B 5b
 
-" set h (same as n, cursor left) to 'end of word'
-noremap h e
+" set n (same as n, cursor left) to 'end of word'
+noremap n e
 
 " Ctrl + U or E will move up/down the view port without moving the cursor
 noremap <C-I> 5<C-y>
@@ -211,10 +202,10 @@ source $HOME/.config/nvim/cursor_for_qwerty.vim
 
 " ===
 " === Insert Mode Cursor Movement
-" ===
+" === <c-o> move to preview site
 inoremap <C-a> <ESC>A
-inoremap <C-i> <ESC>O
-inoremap <C-l> <ESC>o
+inoremap <C-p> <ESC>O
+inoremap <C-n> <ESC>o
 
 " ===
 " === Command Mode Cursor Movement
@@ -245,7 +236,7 @@ noremap <LEADER>i <C-w>k
 noremap <LEADER>k <C-w>j
 noremap <LEADER>j <C-w>h
 noremap <LEADER>l <C-w>l
-noremap qf <C-w>o
+noremap qf <slsC-w>o
 
 " Disable the default s key
 noremap s <nop>
@@ -257,10 +248,10 @@ noremap sj :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
 noremap sl :set splitright<CR>:vsplit<CR>
 
 " Resize splits with arrow keys
-noremap <up> :res +5<CR>
-noremap <down> :res -5<CR>
-noremap <left> :vertical resize-5<CR>
-noremap <right> :vertical resize+5<CR>
+noremap <up> :res +2<CR>
+noremap <down> :res -2<CR>
+noremap <left> :vertical resize-4<CR>
+noremap <right> :vertical resize+4<CR>
 
 " Place the two screens up and down
 noremap sh <C-w>t<C-w>K
@@ -302,14 +293,11 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 "
 " === Other useful stuff
 " ===
-" Open a \ instance of st with the cwd
-nnoremap \t :tabe<CR>:-tabmove<CR>:term sh -c 'st'<CR><C-\><C-N>:q<CR>
-
 " Opening a terminal window
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 " Press space twice to jump to the next ' ' and edit it
-noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
+" noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 " Spelling Check with <space>sc
 noremap <LEADER>sc :set spell!<CR>
@@ -317,7 +305,7 @@ noremap <LEADER>sc :set spell!<CR>
 " Press ` to change case (instead of ~)
 noremap ` ~
 
-noremap <C-c> zz
+" noremap <C-c> zz
 
 " Auto change directory to current dir
 autocmd BufEnter * silent! lcd %:p:h
@@ -428,7 +416,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'kevinhwang91/rnvimr'
 Plug 'airblade/vim-rooter'
-Plug 'pechorin/any-jump.vim'
+" Plug 'pechorin/any-jump.vim'
 
 " Taglist
 Plug 'liuchengxu/vista.vim'
@@ -876,7 +864,7 @@ let g:ctrlp_cmd = 'CtrlP'
 " ===
 " === Undotree
 " ===
-noremap L :UndotreeToggle<CR>
+noremap lg :UndotreeToggle<CR>
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators = 1
@@ -913,10 +901,10 @@ endfunc
 let g:VM_leader                     = {'default': ',', 'visual': ',', 'buffer': ','}
 let g:VM_maps                       = {}
 let g:VM_custom_motions             = {'n': 'h', 'i': 'l', 'u': 'k', 'e': 'j', 'N': '0', 'I': '$', 'h': 'e'}
-let g:VM_maps['i']                  = 'k'
-let g:VM_maps['I']                  = 'K'
-let g:VM_maps['Find Under']         = '<C-k>'
-let g:VM_maps['Find Subword Under'] = '<C-k>'
+let g:VM_maps['i']                  = 'w'
+let g:VM_maps['I']                  = 'W'
+let g:VM_maps['Find Under']         = '<C-w>'
+let g:VM_maps['Find Subword Under'] = '<C-w>'
 let g:VM_maps['Find Next']          = ''
 let g:VM_maps['Find Prev']          = ''
 let g:VM_maps['Remove Region']      = 'q'
@@ -1328,9 +1316,9 @@ let g:move_key_modifier = 'C'
 " ===
 " === any-jump
 " ===
-nnoremap J :AnyJump<CR>
-let g:any_jump_window_width_ratio  = 0.8
-let g:any_jump_window_height_ratio = 0.9
+" nnoremap J :AnyJump<CR>
+" let g:any_jump_window_width_ratio  = 0.8
+" let g:any_jump_window_height_ratio = 0.9
 
 
 " ===
