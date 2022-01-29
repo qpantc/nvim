@@ -205,7 +205,12 @@ source $HOME/.config/nvim/cursor_for_qwerty.vim
 " === <c-o> move to preview site
 inoremap <C-a> <ESC>A
 inoremap <C-p> <ESC>O
-inoremap <C-n> <ESC>o
+inoremap <C-k> <ESC>o
+inoremap <C-l> <ESC>la
+inoremap <C-b> <ESC>ha
+inoremap <C-d> <ESC>bji
+
+
 
 " ===
 " === Command Mode Cursor Movement
@@ -295,6 +300,8 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 " ===
 " Opening a terminal window
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
+" close a terminal 
+tnoremap <Esc> <C-\><C-n>:q!<CR>
 
 " Press space twice to jump to the next ' ' and edit it
 " noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
@@ -435,6 +442,10 @@ Plug 'theniceboy/vim-snippets'
 
 " Undo Tree
 Plug 'mbbill/undotree'
+
+" toggle-bool
+Plug 'AndrewRadev/switch.vim'
+Plug 'gerazov/vim-toggle-bool'
 
 " Git
 Plug 'theniceboy/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
@@ -583,7 +594,7 @@ set lazyredraw
 " === settings for Fortran
 " ===
 
-inoremap <c-j> <Esc>/<++><CR><Esc><cf>
+"inoremap <c-j> <Esc>/<++><CR><Esc><cf>
 let fortran_linter = 1
 let fortran_free_source=1
 let fortran_do_enddo=1
@@ -616,6 +627,19 @@ hi NonText ctermfg=gray guifg=grey10
 "hi SpecialKey ctermfg=blue guifg=grey70
 
 " ===================== Start of Plugin Settings =====================
+
+" ===
+" === switch_bool
+" ===
+let g:switch_custom_definitions =
+    \ [
+    \   switch#NormalizedCase(['true', 'false']),
+    \   switch#NormalizedCase(['yes', 'no']),
+    \   switch#NormalizedCase(['on', 'off']),
+    \   switch#NormalizedCase(['enable', 'disable']),
+    \   switch#NormalizedCase(['enabled', 'disabled'])
+    \ ]
+nnoremap <silent> <Leader><tab> :ToggleBool<CR>
 
 
 " ===
@@ -744,7 +768,7 @@ nmap <leader>aw  <Plug>(coc-codeaction-selected)w
 " coc-tasks
 noremap <silent> <leader>ts :CocList tasks<CR>
 " coc-snippets
-imap <C-l> <Plug>(coc-snippets-expand)
+" imap <C-l> <Plug>(coc-snippets-expand)
 vmap <C-e> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-e>'
 let g:coc_snippet_prev = '<c-n>'
@@ -1020,7 +1044,7 @@ augroup calendar-mappings
 	autocmd FileType calendar nmap <buffer> <c-u> <Plug>(calendar_move_up)
 	autocmd FileType calendar nmap <buffer> <c-n> <Plug>(calendar_move_left)
 	autocmd FileType calendar nmap <buffer> <c-e> <Plug>(calendar_move_down)
-	autocmd FileType calendar nmap <buffer> <c-i> <Plug>(calendar_move_right)
+	" autocmd FileType calendar nmap <buffer> <c-i>" <Plug>(calendar_move_right)
 	autocmd FileType calendar nmap <buffer> k <Plug>(calendar_start_insert)
 	autocmd FileType calendar nmap <buffer> K <Plug>(calendar_start_insert_head)
 	" unmap <C-n>, <C-p> for other plugins
